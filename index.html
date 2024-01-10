@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+      }
+      canvas {
+        position: fixed;
+        z-index: -1;
+        top: 0;
+        left: 0;
+      }
+      #fill {
+        height: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+      .raw {
+        display: flex;
+        gap: 5px;
+        height: 100%;
+      }
+      .col {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .progress {
+        width: 15px;
+        background: lightgray;
+        height: 100%;
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+      }
+      .one-span {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        gap: 5px;
+      }
+      .progres-val {
+        background: darkred;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="fill">
+      <div class="raw">
+        <div class="col">
+          <div class="progress">
+            <div id="track" class="progres-val"></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="progress">
+            <div id="about" class="progres-val"></div>
+          </div>
+          <div class="progress">
+            <div id="projects" class="progres-val"></div>
+          </div>
+          <div class="progress">
+            <div id="comunity" class="progres-val"></div>
+          </div>
+          <div class="progress">
+            <div id="joinus" class="progres-val"></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="progress-fill"></div>
+          <div class="one-span">
+            <div class="progress">
+              <div id="pr1" class="progres-val"></div>
+            </div>
+            <div class="progress">
+              <div id="pr2" class="progres-val"></div>
+            </div>
+            <div class="progress">
+              <div id="pr3" class="progres-val"></div>
+            </div>
+            <div class="progress">
+              <div id="pr4" class="progres-val"></div>
+            </div>
+          </div>
+          <div class="progress-fill"></div>
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
