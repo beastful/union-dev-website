@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <style>
+      * {
+        overflow: hidden;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+      }
+      canvas {
+        position: fixed;
+        z-index: -2;
+        top: 0;
+        left: 0;
+      }
+      #app {
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        overflow-y: auto;
+        height: 400px;
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+      }
+      #loading {
+        position: fixed;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100%;
+        background: #fff;
+      }
+      .banner {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .banner-cnt h1 {
+        font-size: 30px;
+        letter-spacing: 15px;
+        text-transform: uppercase;
+      }
+      #loading-bar {
+        stroke: #000;
+        width: 250px;
+        height: 2px;
+        background: #efefef;
+      }
+      #loading-progress {
+        width: 2%;
+        height: 100%;
+        background: #000;
+        transition: 1s linear;
+      }
+      .loading-text {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 0 5px;
+        font-weight: 500;
+        color: #75757566;
+        font-size: 12px;
+      }
+      #loading-path {
+        color: #000;
+      }
+
+      #header {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        font-size: 30px;
+        letter-spacing: 15px;
+        word-spacing: 20px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        text-transform: uppercase;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+      }
+
+      .header-flex {
+        display: flex;
+        gap: 25px;
+      }
+
+      #header-layer1 {
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        position: absolute;
+      }
+
+      #about-svg-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        transform: translate(-50%, -50%);
+        height: 285px;
+        width: 495px;
+        z-index: -1;
+      }
+
+      .about-svg-header {
+        position: absolute;
+        top: 19px;
+        left: 137px;
+        font-weight: 500;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      .about-svg-paragraph {
+        position: absolute;
+        top: 95px;
+        letter-spacing: 1px;
+        word-spacing: 5px;
+        font-size: 14px;
+        padding: 0 50px;
+        font-weight: 500;
+      }
+
+      #about-svg-img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+      }
+
+      .about-svg-paragraph,
+      .about-svg-header,
+      #about-stroke-top {
+        opacity: 0;
+      }
+
+      #what-we-do {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        padding: 30px;
+      }
+
+      #wwd-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        position: relative;
+        z-index: -2;
+      }
+
+      .wwd-grid-el {
+        width: 55px;
+        height: 55px;
+        background: #efefef99;
+        border-radius: 5px;
+      }
+
+      #wwd-svg-img {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+      }
+
+      #wwd-header {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        position: fixed;
+        top: 75px;
+        left: 50px;
+        font-size: 20px;
+        font-weight: 400;
+        letter-spacing: 2px;
+      }
+
+      .wwd-paragraph {
+        position: absolute;
+        top: 200px;
+        letter-spacing: 2px;
+        word-spacing: 5px;
+        font-size: 14px;
+        font-weight: 500;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        left: 0;
+        right: 0;
+        padding: 0 40px;
+        text-align: justify;
+      }
+
+      .projects-container {
+        position: fixed;
+        top: 0;
+        right: 0;
+        background: #fff;
+        width: 100%;
+        height: 100vh;
+        box-sizing: border-box;
+        padding: 100px 300px;
+        z-index: -1;
+        opacity: 0;
+      }
+      .project-img {
+        width: 100%;
+        height: 150px;
+        min-width: 200px;
+        background: red;
+      }
+
+      .projects-item {
+        min-width: 250px;
+        width: 250px;
+      }
+
+      #projects-header {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 40px;
+        font-weight: 600;
+        padding-bottom: 100px;
+        letter-spacing: 2px;
+      }
+
+      #projects-scroller {
+        display: flex;
+        gap: 50px;
+        position: absolute;
+      }
+
+      .join-us {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #scroll-call {
+        position: fixed;
+        z-index: -1;
+        bottom: 0px;
+        left: 50%;
+        transform: translate(-50%, 0);
+      }
+
+      .camera-top-left {
+        position: fixed;
+        top: 50px;
+        left: 50px;
+      }
+      .camera-top-right {
+        position: fixed;
+        top: 50px;
+        right: 50px;
+      }
+      .camera-bottom-left {
+        position: fixed;
+        bottom: 50px;
+        left: 50px;
+      }
+      .camera-bottom-right {
+        position: fixed;
+        bottom: 50px;
+        right: 50px;
+      }
+
+      .camera-top-left svg {
+        width: 100px;
+        stroke: #0005;
+      }
+      .camera-top-right svg {
+        width: 100px;
+        stroke: #0005;
+      }
+      .camera-bottom-left svg {
+        width: 100px;
+        stroke: #0005;
+      }
+      .camera-bottom-right svg {
+        width: 100px;
+        stroke: #0005;
+      }
+
+      .join-us-img svg {
+        width: 70px;
+      }
+
+      .join-us-text {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 500;
+        font-size: 16px;
+        padding: 10px;
+      }
+
+      @media (max-width: 700px) {
+        .header-flex {
+          flex-direction: column;
+          align-items: center;
+        }
+        .projects-container {
+          padding: 50px 30px;
+        }
+
+        .camera-top-left {
+          position: fixed;
+          top: 10px;
+          left: 10px;
+        }
+        .camera-top-right {
+          position: fixed;
+          top: 10px;
+          right: 10px;
+        }
+        .camera-bottom-left {
+          position: fixed;
+          bottom: 10px;
+          left: 10px;
+        }
+        .camera-bottom-right {
+          position: fixed;
+          bottom: 10px;
+          right: 10px;
+        }
+      }
+    </style>
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="loading" class="full-h-on-demand">
+      <div>
+        <div class="loading-text">
+          <div>Загрузка</div>
+          <div id="loading-path">./</div>
+        </div>
+        <div id="loading-bar">
+          <div id="loading-progress"></div>
+        </div>
+      </div>
+    </div>
+    <div class="camera-interface">
+      <div class="camera-top-left">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" d="M 70 10 h -60 v 60"></path>
+        </svg>
+      </div>
+      <div class="camera-top-right">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" d="M 30 10 h 60 v 60"></path>
+        </svg>
+      </div>
+      <div class="camera-bottom-left">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" d="M 10 30 v 60 h 60"></path>
+        </svg>
+      </div>
+      <div class="camera-bottom-right">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path fill="none" d="M 30 90 h 60 v -60"></path>
+        </svg>
+      </div>
+    </div>
+    <div id="app">
+      <div class="full-h-on-demand">
+        <div id="header">
+          <div id="header-layer1"></div>
+          <div id="header-layer2"></div>
+          <div class="header-flex">
+            <div>Union</div>
+            <div>Dev</div>
+            <div>Club</div>
+          </div>
+        </div>
+        <svg
+          style="width: 120px"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+          id="scroll-call"
+        >
+          <path stroke="#000" d="">
+            <animate
+              attributeName="d"
+              values="M 50 0 v 50; M 50 0 v 30; M 50 0 v 50"
+              dur="2s"
+              repeatCount="indefinite"
+            />
+          </path>
+          <path fill="none" stroke="#000" d="">
+            <animate
+              attributeName="d"
+              values="M 45 60 a 5 5 180 0 1 10 0 v 8 a 5 5 180 0 1 -10 0 v -8; M 45 40 a 5 5 180 0 1 10 0 v 8 a 5 5 180 0 1 -10 0 v -8; M 45 60 a 5 5 180 0 1 10 0 v 8 a 5 5 180 0 1 -10 0 v -8"
+              dur="2s"
+              repeatCount="indefinite"
+            />
+          </path>
+          <path stroke="#000" d="">
+            <animate
+              attributeName="d"
+              values="M 50 78 v 50; M 50 58 v 50; M 50 78 v 50"
+              dur="2s"
+              repeatCount="indefinite"
+            />
+          </path>
+          <path stroke="#000" d="">
+            <animate
+              attributeName="d"
+              values="M 50 58 v 3; M 50 38 v 3; M 50 58 v 3"
+              dur="2s"
+              repeatCount="indefinite"
+            />
+          </path>
+        </svg>
+      </div>
+      <div class="full-h-on-demand">
+        <div class="media-scale">
+          <div id="about-svg-container">
+            <svg
+              id="about-svg-img"
+              width="495"
+              height="285"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                id="about-stroke-top"
+                d="M 85 50 l 35 -35 h 150 l -35 35 h -150 l 35 -35"
+                fill="none"
+                stroke="#000"
+                stroke-width="1"
+              />
+              <path
+                id="about-stroke-cnt"
+                d="M 70 65 l -50 50 v 100 l 50 50 h 350 l 50 -50 v -150 l -50 -50 h -130 l -50 50 h -170 l -25 25"
+                fill="none"
+                stroke="#000"
+                stroke-width="1"
+                stroke-dasharray="100 100"
+                stroke-dashoffset="100"
+              />
+            </svg>
+            <div class="about-svg-header">О клубе</div>
+            <div class="about-svg-paragraph">
+              Добро пожаловать в наш дружелюбный коллектив. Мы занимаемся
+              разработкой различных проектов. Таких как: разработка приложений,
+              моделирование, создание движков, сайтов и даже игр. Наша команда
+              ищет таких же разработчиков как и мы, готовых к созданию новых
+              проектов и освоению новых навыков.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="full-h-on-demand">
+        <div id="what-we-do">
+          <svg
+            id="wwd-svg-img"
+            width="200"
+            height="200"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              id="wwd-stroke-cnt"
+              d="M 40 50 v -2 h 4 v 4 h -4 v -2 h -20 v 140 h 50 v -2 h 4 v 4 h -4 v -2"
+              fill="none"
+              stroke="#000"
+              stroke-width="1"
+            />
+          </svg>
+          <div id="wwd-header">
+            <div>Что</div>
+            <div>Мы</div>
+            <div>Делаем</div>
+          </div>
+          <div class="wwd-paragraph">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
+            sint dolore ut debitis qui molestiae quae non sunt quibusdam id.
+            Reiciendis eveniet facilis, fuga iusto omnis in voluptas dolores
+            unde?
+          </div>
+          <div id="wwd-grid">
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+            <div class="wwd-grid-el"></div>
+          </div>
+        </div>
+      </div>
+      <div class="full-h-on-demand"></div>
+      <div class="full-h-on-demand"></div>
+      <div class="full-h-on-demand"></div>
+      <div class="full-h-on-demand"></div>
+      <div class="full-h-on-demand"></div>
+      <div class="full-h-on-demand"></div>
+      <div class="full-h-on-demand"></div>
+      <div class="full-h-on-demand"></div>
+      <div class="full-h-on-demand"></div>
+      <div class="full-h-on-demand"></div>
+      <div class="full-h-on-demand"></div>
+    </div>
+    <div class="projects-container full-h-on-demand">
+      <div id="projects-header">
+        <div>Наши</div>
+        <div>проекты</div>
+      </div>
+      <div id="projects-scroller">
+        <div class="projects-item">
+          <div class="project-img"></div>
+          <div class="project-text">Скоро добавим</div>
+        </div>
+        <div class="projects-item">
+          <div class="project-img"></div>
+          <div class="project-text">Скоро добавим</div>
+        </div>
+        <div class="projects-item">
+          <div class="project-img"></div>
+          <div class="project-text">Скоро добавим</div>
+        </div>
+        <div class="projects-item">
+          <div class="project-img"></div>
+          <div class="project-text">Скоро добавим</div>
+        </div>
+        <div class="projects-item">
+          <div class="project-img"></div>
+          <div class="project-text">Скоро добавим</div>
+        </div>
+        <div class="projects-item">
+          <div class="project-img"></div>
+          <div class="project-text">Скоро добавим</div>
+        </div>
+        <div class="projects-item">
+          <div class="project-img"></div>
+          <div class="project-text">Скоро добавим</div>
+        </div>
+        <div class="projects-item">
+          <div class="project-img"></div>
+          <div class="project-text">Скоро добавим</div>
+        </div>
+        <div class="projects-item">
+          <div class="project-img"></div>
+          <div class="project-text">Скоро добавим</div>
+        </div>
+      </div>
+    </div>
+    <div class="join-us">
+      <div class="join-us-img">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36">
+          <path
+            fill="#5865f2"
+            d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"
+          />
+        </svg>
+      </div>
+      <div class="join-us-text">
+        <a href="https://discord.gg/e3VZnwP896">Вступай к нам</a>
+      </div>
+    </div>
+    <script>
+      const fullHeightElements =
+        document.getElementsByClassName("full-h-on-demand");
+
+      function size() {
+        for (let i = 0; i < fullHeightElements.length; i++) {
+          let el = fullHeightElements[i];
+          el.style.transition = "0.5s";
+          el.style.height = window.innerHeight + "px";
+        }
+      }
+      size();
+      window.addEventListener("resize", function () {
+        size();
+      });
+    </script>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

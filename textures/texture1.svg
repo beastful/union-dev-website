@@ -1,0 +1,48 @@
+<svg
+          width="495"
+          height="285"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M 85 50 l 35 -35 h 150 l -35 35 h -150 l 35 -35"
+            fill="none"
+            stroke="#000"
+            stroke-width="2"
+          />
+          <path
+            d="M 70 65 l -50 50 v 100 l 50 50 h 350 l 50 -50 v -150 l -50 -50 h -130 l -50 50 h -170 l -25 25"
+            fill="none"
+            stroke="#000"
+            stroke-width="2"
+            style="stroke-width: 2; fill: #555555; filter:url(#white-glow)"
+          />
+
+          <filter id="white-glow">
+            <feFlood
+              result="flood"
+              flood-color="red"
+              flood-opacity="1"
+            ></feFlood>
+            <feComposite
+              in="flood"
+              result="mask"
+              in2="SourceGraphic"
+              operator="in"
+            ></feComposite>
+            <feMorphology
+              in="mask"
+              result="dilated"
+              operator="dilate"
+              radius="2"
+            ></feMorphology>
+            <feGaussianBlur
+              in="dilated"
+              result="blurred"
+              stdDeviation="5"
+            ></feGaussianBlur>
+            <feMerge>
+              <feMergeNode in="blurred"></feMergeNode>
+              <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+          </filter>
+        </svg>
